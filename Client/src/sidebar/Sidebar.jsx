@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import '../MyStyle.css'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { IconButton } from '@mui/material';
@@ -10,6 +10,58 @@ import SearchIcon from '@mui/icons-material/Search';
 import ConversationItem from '../conversationItem/ConversationItem';
 
 function Sidebar() {
+    const [conversations,setConversation]=useState([
+        {
+            title:'Test1',
+            // lastMessage:"how are you today and hows going all how are you today and hows going all",
+            lastSeen:"today"
+        },
+        {
+            title:"Test1",
+            lastMessage:"how are you today and hows going all how are you today and hows going all",
+            lastSeen:"today"
+        },
+        {
+            title:"Test1",
+            lastMessage:"how are you today and hows going all how are you today and hows going all",
+            lastSeen:"today"
+        },
+        {
+            title:'Test1',
+            // lastMessage:"how are you today and hows going all how are you today and hows going all",
+            lastSeen:"today"
+        },
+        {
+            title:"Test1",
+            lastMessage:"how are you today and hows going all how are you today and hows going all",
+            lastSeen:"today"
+        },
+        {
+            title:'Test1',
+            // lastMessage:"how are you today and hows going all how are you today and hows going all",
+            lastSeen:"today"
+        },
+        {
+            title:"Test1",
+            lastMessage:"how are you today and hows going all how are you today and hows going all",
+            lastSeen:"today"
+        },
+        {
+            title:"Test1",
+            lastMessage:"how are you today and hows going all how are you today and hows going all",
+            lastSeen:"today"
+        },
+        {
+            title:'Test1',
+            // lastMessage:"how are you today and hows going all how are you today and hows going all",
+            lastSeen:"today"
+        },
+        {
+            title:"Test1",
+            lastMessage:"how are you today and hows going all how are you today and hows going all",
+            lastSeen:"today"
+        }
+    ])
     return (
         <div className='sidebar-container'>
             <div className='sb-header'>
@@ -41,7 +93,12 @@ function Sidebar() {
                 <input placeholder='search' className='search-box' />
             </div>
             <div className='sb-conversations'>
-                <ConversationItem />
+                {conversations.map((conversation)=>{
+                     return(
+                        <ConversationItem  props={conversation} />
+                     )
+                })}
+                
             </div>
         </div>
     )
