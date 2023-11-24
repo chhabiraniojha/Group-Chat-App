@@ -5,7 +5,7 @@ function MessageSelf() {
   return (
     <div className='self-message-container'>
       <div className='self-message'>
-                <div >gggghhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh</div>
+                <div >gggghhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg</div>
                 <div className='message-time'>12:52</div>
             </div>
     </div>

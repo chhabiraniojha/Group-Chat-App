@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import './App.css'
-import MainContainer from './mainContainer/MainContainer'
+import MainContainer from './components/mainContainer/MainContainer'
+import LoginSignup from './components/login-signup/LoginSignup'
 
 function App() {
 
@@ -8,7 +9,8 @@ function App() {
   return (
 
     <div className='App'>
-      <MainContainer />
+      {/* <MainContainer />  */}
+      <LoginSignup />
     </div>
 
   )
