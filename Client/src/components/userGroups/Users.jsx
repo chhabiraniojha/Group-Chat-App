@@ -3,7 +3,7 @@ import '../MyStyle.css'
 import logo from '../../images/chatLogo.png'
 import { IconButton } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
-function User_Groups() {
+function Users() {
     return (
         <div className='list-container'>
             <div className='ug-header'>
@@ -62,4 +62,4 @@ function User_Groups() {
     )
 }
 
-export default User_Groups
+export default Users
