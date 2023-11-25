@@ -8,7 +8,7 @@ import MessageSelf from '../messageSelf/MessageSelf';
 function ChatArea() {
     return (
         <div className='chatarea-container'>
-            <div className='conversation-container'>
+            <div className='chatarea-header'>
                 <div className='con-icon'>I</div>
                 <div className='con-title'>Test1</div>
                 <div className='con-lastmessage'>online</div>
