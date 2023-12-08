@@ -9,6 +9,8 @@ function Login() {
       <TextField id="email" label="Enter Your email" type='email' variant="outlined" />
       <TextField id="Password" label="Password" type='password' variant="outlined" />
       <Button variant="contained" color='success'>Login</Button>
+      <p>do not have an account <a>signup</a></p>
+      <p>forgot password</p>
     </div>
   )
 }

@@ -6,7 +6,8 @@ const userController=require("../controller/User");
 const router=express.Router();
 
 
-router.post("/signup",userController.signup)
+router.post("/signup",userController.signup);
+router.post('/signin',userController.signin)
 
 
 
