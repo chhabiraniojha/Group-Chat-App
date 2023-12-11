@@ -25,6 +25,11 @@ const Users=sequelize.define('user',{
   password:{
     type:Sequelize.STRING,
     allowNull:false
+  },
+  loggedInStatus:{
+    type:Sequelize.BOOLEAN,
+    allowNull:false,
+    defaultValue:false
   }
 });
 

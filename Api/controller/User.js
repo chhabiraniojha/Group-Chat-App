@@ -13,7 +13,7 @@ exports.signup = async (req, res, next) => {
     if (userCheck === null) {
       bcrypt.hash(password, 10, async function (err, hash) {
         // Store hash in your password DB.
-        const user = await Users.create({ name, email,phone, password: hash });
+        const user = await User.create({ name, email,phone, password: hash });
         return res.status(200).json({success:true,message:"successfully signedup"});
       });
     } else {
@@ -33,10 +33,16 @@ exports.signin = async (req, res, next) => {
         email: email
       }
     })
+    console.log(user[0].id)
     if (user.length > 0) {
-      bcrypt.compare(password, user[0].password, function (err, result) {
+      bcrypt.compare(password, user[0].password,async function (err, result) {
         // result == true
         if (result) {
+          await User.update({ loggedInStatus: true }, {
+            where: {
+              id: user[0].id
+            }
+          });
           return res.status(200).json({data:user[0],message:"success loged in",token:generateAccessToken(user[0].id,user[0].name)})
         } else {
           return res.status(401).json("password mismatch")
@@ -52,4 +58,19 @@ exports.signin = async (req, res, next) => {
     res.json(error)
   }
 
+}
+
+exports.onlineUser=async(req,res,next)=>{
+   try {
+    const onlineUserList = await User.findAll({
+      where: {
+        loggedInStatus: true
+      }
+    })
+    if(onlineUserList.length>0){
+      res.json(onlineUserList)
+    }
+   } catch (error) {
+    
+   }
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../MyStyle.css'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { IconButton } from '@mui/material';
@@ -9,61 +9,26 @@ import NightlightIcon from '@mui/icons-material/Nightlight';
 import SearchIcon from '@mui/icons-material/Search';
 import ConversationItem from '../conversationItem/ConversationItem';
 import { useNavigate } from 'react-router-dom';
+import axios from "axios"
 
 function Sidebar() {
     const navigate=useNavigate();
-    const [conversations,setConversation]=useState([
-        {
-            title:'Test1',
-            // lastMessage:"how are you today and hows going all how are you today and hows going all",
-            lastSeen:"today"
-        },
-        {
-            title:"Test1",
-            lastMessage:"how are you today and hows going all how are you today and hows going all",
-            lastSeen:"today"
-        },
-        {
-            title:"Test1",
-            lastMessage:"how are you today and hows going all how are you today and hows going all",
-            lastSeen:"today"
-        },
-        {
-            title:'Test1',
-            // lastMessage:"how are you today and hows going all how are you today and hows going all",
-            lastSeen:"today"
-        },
-        {
-            title:"Test1",
-            lastMessage:"how are you today and hows going all how are you today and hows going all",
-            lastSeen:"today"
-        },
-        {
-            title:'Test1',
-            // lastMessage:"how are you today and hows going all how are you today and hows going all",
-            lastSeen:"today"
-        },
-        {
-            title:"Test1",
-            lastMessage:"how are you today and hows going all how are you today and hows going all",
-            lastSeen:"today"
-        },
-        {
-            title:"Test1",
-            lastMessage:"how are you today and hows going all how are you today and hows going all",
-            lastSeen:"today"
-        },
-        {
-            title:'Test1',
-            // lastMessage:"how are you today and hows going all how are you today and hows going all",
-            lastSeen:"today"
-        },
-        {
-            title:"Test1",
-            lastMessage:"how are you today and hows going all how are you today and hows going all",
-            lastSeen:"today"
+    const [conversations,setConversation]=useState([]);
+
+    const getCoversation=async ()=>{
+        try {
+            const response=await axios.get('http://localhost:3000/users/onlineusers')
+            console.log(response);
+            setConversation(response.data)
+        } catch (error) {
+            console.log(error)
         }
-    ])
+    }
+    useEffect(()=>{
+        getCoversation();  
+    },[])
+    console.log(conversations)
+    
     return (
         <div className='sidebar-container'>
             <div className='sb-header'>

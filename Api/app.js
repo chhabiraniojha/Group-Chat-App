@@ -20,7 +20,7 @@ app.use(cors())
 app.use("/users",userRoute)
 
 
-sequelize.sync({force:true})
+sequelize.sync({})
 .then(res=>{
     app.listen(3000)
 }).catch(err=>{
