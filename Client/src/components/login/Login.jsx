@@ -11,7 +11,9 @@ function Login() {
   const handleSignin=async()=>{
     try {
       const response=await axios.post(`http://localhost:3000/users/signin`,{email,password})
+      console.log(response.status)
       if(response.status==200){
+        localStorage.setItem("token",response.data.token)
         alert("success")
         navigate("/app/chat")
       }

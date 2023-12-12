@@ -8,7 +8,8 @@ const router=express.Router();
 
 router.post("/signup",userController.signup);
 router.post('/signin',userController.signin);
-router.get('/onLineusers',userController.onlineUser)
+router.get('/onLineusers',userController.onlineUser);
+
 
 
 

@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import '../MyStyle.css'
+import axios from 'axios';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IconButton } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
@@ -7,6 +8,18 @@ import MessageOthers from '../messageOthers/MessageOthers';
 import MessageSelf from '../messageSelf/MessageSelf';
 import { AnimatePresence, motion } from 'framer-motion';
 function ChatArea() {
+    const [message,setMessage]=useState("")
+    async function hendleSendMessage(e){
+       try {
+          const token=localStorage.getItem("token")
+          const response=await axios.post(`http://localhost:3000/chat`,{message},{headers: { Authorization: token } })
+          if(response.status==200){
+            setMessage("")
+          }
+       } catch (error) {
+         console.log(error)
+       }
+    }
     return (
         <AnimatePresence>
             <motion.div
@@ -43,8 +56,8 @@ function ChatArea() {
                     <MessageSelf />
                 </div>
                 <div className='text-input-area'>
-                    <input placeholder='type a message' className='search-box' />
-                    <IconButton>
+                    <input placeholder='type a message' type='text' value={message} onChange={(e)=>setMessage(e.target.value)} className='search-box' />
+                    <IconButton onClick={hendleSendMessage}>
                         <SendIcon />
                     </IconButton>
                 </div>

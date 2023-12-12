@@ -3,8 +3,8 @@ const User=require('../models/User')
 const jwt=require('jsonwebtoken')
 
 
-const generateAccessToken=(id,name)=>{
-  return jwt.sign({userId:id,userName:name},process.env.SECRET_KEY)
+const generateAccessToken=(id)=>{
+  return jwt.sign({userId:id},process.env.SECRET_KEY)
 }
 exports.signup = async (req, res, next) => {
   const { name, email,phone, password } = req.body;
@@ -33,7 +33,8 @@ exports.signin = async (req, res, next) => {
         email: email
       }
     })
-    console.log(user[0].id)
+    console.log(user.length)
+    
     if (user.length > 0) {
       bcrypt.compare(password, user[0].password,async function (err, result) {
         // result == true
@@ -43,7 +44,7 @@ exports.signin = async (req, res, next) => {
               id: user[0].id
             }
           });
-          return res.status(200).json({data:user[0],message:"success loged in",token:generateAccessToken(user[0].id,user[0].name)})
+          return res.status(200).json({data:user[0],message:"success loged in",token:generateAccessToken(user[0].id)})
         } else {
           return res.status(401).json("password mismatch")
         }
