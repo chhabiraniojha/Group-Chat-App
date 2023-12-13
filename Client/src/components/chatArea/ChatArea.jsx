@@ -28,13 +28,26 @@ function ChatArea() {
     var decoded = jwtDecode(token);
     console.log(decoded.userId);
     async function getMessages(){
-         const response=await axios.get("http://localhost:3000/chat");
-         setMessageArea(response.data)
+        const localMessages=(JSON.parse(localStorage.getItem("message")))
+        let lastId=undefined;
+        if(localMessages.length!=0){
+            lastId=localMessages[localMessages.length-1].id;
+        }
+        const response=await axios.get(`http://localhost:3000/chat/${lastId}`);
+        const storageMessages=response.data;
+        console.log(storageMessages)
+        const mergeMessage=localMessages.concat(storageMessages)
+        const trimmedToTenMessage=mergeMessage.splice(0,mergeMessage.length-10)
+        console.log(mergeMessage)
+        setMessageArea(mergeMessage)
+        localStorage.setItem("message",JSON.stringify(messageArea))
+        console.log(JSON.parse(localStorage.getItem("message")))
     }
 
     useEffect(()=>{
         setInterval(() =>getMessages(), 1000);
-    },[setMessageArea])
+        
+    },[])
     return (
         <AnimatePresence>
             <motion.div

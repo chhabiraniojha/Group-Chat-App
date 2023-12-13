@@ -2,7 +2,7 @@ import React from 'react'
 import '../MyStyle.css'
 
 function MessageSelf({message}) {
-  console.log(message)
+  
   return (
     <div className='self-message-container'>
       <div className='self-message'>
