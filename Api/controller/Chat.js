@@ -13,3 +13,12 @@ exports.messages=async (req,res,next)=>{
 
 
 }
+
+exports.getMessages=async(req,res,next)=>{
+      try {
+        const messages=await chat.findAll();
+        res.json(messages)
+      } catch (error) {
+        res.json(error)
+      }
+}

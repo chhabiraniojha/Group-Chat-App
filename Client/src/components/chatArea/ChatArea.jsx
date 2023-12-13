@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../MyStyle.css'
 import axios from 'axios';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -7,19 +7,34 @@ import SendIcon from '@mui/icons-material/Send';
 import MessageOthers from '../messageOthers/MessageOthers';
 import MessageSelf from '../messageSelf/MessageSelf';
 import { AnimatePresence, motion } from 'framer-motion';
+import { jwtDecode } from "jwt-decode";
 function ChatArea() {
-    const [message,setMessage]=useState("")
-    async function hendleSendMessage(e){
-       try {
-          const token=localStorage.getItem("token")
-          const response=await axios.post(`http://localhost:3000/chat`,{message},{headers: { Authorization: token } })
-          if(response.status==200){
-            setMessage("")
-          }
-       } catch (error) {
-         console.log(error)
-       }
+    const [message, setMessage] = useState("");
+    const [messageArea,setMessageArea]=useState([]);
+    async function hendleSendMessage(e) {
+        try {
+            const token = localStorage.getItem("token")
+            const response = await axios.post(`http://localhost:3000/chat`, { message }, { headers: { Authorization: token } })
+            if (response.status == 200) {
+                setMessage("")
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
+
+
+    var token = localStorage.getItem("token"); // jwt token;
+    var decoded = jwtDecode(token);
+    console.log(decoded.userId);
+    async function getMessages(){
+         const response=await axios.get("http://localhost:3000/chat");
+         setMessageArea(response.data)
+    }
+
+    useEffect(()=>{
+        setInterval(() =>getMessages(), 1000);
+    },[setMessageArea])
     return (
         <AnimatePresence>
             <motion.div
@@ -42,21 +57,18 @@ function ChatArea() {
                     </div>
                 </div>
                 <div className='messages-container'>
-                    <MessageOthers />
-                    <MessageSelf />
-                    <MessageOthers />
-                    <MessageSelf />
-                    <MessageOthers />
-                    <MessageSelf />
-                    <MessageOthers />
-                    <MessageSelf />
-                    <MessageOthers />
-                    <MessageSelf />
-                    <MessageOthers />
-                    <MessageSelf />
+                  {messageArea.map((message)=>{
+                      if(message.userId==decoded.userId){
+                        return <MessageSelf message={message}  />
+                        
+                      }else{
+                       return <MessageOthers message={message} />
+                      }
+                  })}
+                    
                 </div>
                 <div className='text-input-area'>
-                    <input placeholder='type a message' type='text' value={message} onChange={(e)=>setMessage(e.target.value)} className='search-box' />
+                    <input placeholder='type a message' type='text' value={message} onChange={(e) => setMessage(e.target.value)} className='search-box' />
                     <IconButton onClick={hendleSendMessage}>
                         <SendIcon />
                     </IconButton>

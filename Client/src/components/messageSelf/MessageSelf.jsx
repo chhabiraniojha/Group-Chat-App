@@ -1,11 +1,12 @@
 import React from 'react'
 import '../MyStyle.css'
 
-function MessageSelf() {
+function MessageSelf({message}) {
+  console.log(message)
   return (
     <div className='self-message-container'>
       <div className='self-message'>
-                <div >gggghhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg</div>
+                <div >{message.message}</div>
                 <div className='message-time'>12:52</div>
             </div>
     </div>
