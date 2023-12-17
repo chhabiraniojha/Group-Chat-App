@@ -9,6 +9,10 @@ import MessageSelf from '../messageSelf/MessageSelf';
 import { AnimatePresence, motion } from 'framer-motion';
 import { jwtDecode } from "jwt-decode";
 import { useParams } from 'react-router-dom';
+import io from "socket.io-client"
+
+const ENDPOINT="http://localhost:3000";
+var socket,selectedChatCompare;
 function ChatArea() {
     // const [groupId,setGroupId]=useState(null);
     const chatAreaRef = useRef(null);
@@ -18,13 +22,18 @@ function ChatArea() {
     // console.log(currentGroup.id)
     const [message, setMessage] = useState("");
     const [messageArea, setMessageArea] = useState([]);
+    const [currentUser,setCurrentUser]=useState({id:localStorage.getItem("token")});
+    const [socketConnected,setSocketConnected]=useState(false);
+    
     async function hendleSendMessage(e) {
         try {
             const token = localStorage.getItem("token")
             const response = await axios.post(`http://localhost:3000/chat`, { message, groupId: currentGroup.id }, { headers: { Authorization: token } })
+            // console.log(response)
             if (response.status == 200) {
                 setMessage("")
             }
+            socket.emit("new message",response,currentGroup.id)
         } catch (error) {
             console.log(error)
         }
@@ -33,11 +42,7 @@ function ChatArea() {
 
     var token = localStorage.getItem("token"); // jwt token;
     var decoded = jwtDecode(token);
-    // console.log(decoded.userId);
     async function getMessages() {
-        // setMessageArea([])
-        // setGroupId(currentGroup.id)
-
         let localMessages = (JSON.parse(localStorage.getItem(`message_${currentGroup.id}`)))
         console.log(`message_${currentGroup.id}`)
         let lastId = undefined;
@@ -53,7 +58,7 @@ function ChatArea() {
         const response = await axios.get(`http://localhost:3000/chat/${lastId}/${currentGroup.id}`);
         if (response.status == 200) {
             const storageMessages = response.data;
-            console.log(storageMessages)
+            // console.log(storageMessages)
             const mergeMessage = localMessages.concat(storageMessages)
             let trimmedToTenMessage = []
             if (mergeMessage.length > 10) {
@@ -65,8 +70,9 @@ function ChatArea() {
             // console.log(mergeMessage)
             localStorage.setItem(`message_${currentGroup.id}`, JSON.stringify(trimmedToTenMessage))
             setMessageArea(mergeMessage)
-            console.log(messageArea)
-            console.log(messageArea)
+            socket.emit("join chat",currentGroup.id)
+            // console.log(messageArea)
+            // console.log(messageArea)
 
 
         } else {
@@ -74,28 +80,56 @@ function ChatArea() {
         }
 
 
-        // console.log(JSON.parse(localStorage.getItem("message")))
+
     }
+    const getCurrentUser=async ()=>{
+         const response=await axios.get('http://localhost:3000/users/currentuser',{ headers: { Authorization: token } });
+         setCurrentUser(response.data)
+    }
+   
+
+    useEffect(()=>{
+        console.log(currentUser)
+        socket=io(ENDPOINT);
+        socket.emit("setup",currentUser);
+        socket.on("connection",()=>setSocketConnected(true));
+
+    },[]);
+
+
+    useEffect(()=>{
+        socket.on('receive-message',(newMessage)=>{
+            setMessageArea([...messageArea, newMessage]);
+            console.log(messageArea)
+        })
+    })
 
     useEffect(() => {
-        const intervalId = setInterval(getMessages, 500);
+        // const intervalId = setInterval(getMessages, 500);
 
-        // Clear the interval when the component is unmounted
-        return () => {
-            clearInterval(intervalId);
-        };
+        // // Clear the interval when the component is unmounted
+        // return () => {
+        //     clearInterval(intervalId);
+        // };
         //  setInterval(() =>getMessages(), 1000);
-        // getMessages()
-    }, [groupData])
+        
+        getMessages()
+    },[groupData])
+    useEffect(() => {
+        // Scroll to the bottom when a new message arrives
+        if (chatAreaRef.current) {
+          chatAreaRef.current.scrollTop = chatAreaRef.current.scrollHeight;
+        }
+      }, [messageArea]);
+    
+
     const scrollToBottom = () => {
         if (chatAreaRef.current) {
             chatAreaRef.current.scrollTop = chatAreaRef.current.scrollHeight;
         }
     };
-    useLayoutEffect(() => {
-        scrollToBottom();
-    }, [messageArea])
-
+    
+   
     return (
         <AnimatePresence>
             <motion.div

@@ -2,7 +2,7 @@ import React from 'react'
 import '../MyStyle.css'
 
 function MessageOthers({message}) {
-    console.log(message)
+    // console.log(message)
     return (
         <div className='other-message-container'>
             <div className='con-icon'>A</div>

@@ -18,14 +18,14 @@ exports.messages=async (req,res,next)=>{
 exports.getMessages=async(req,res,next)=>{
      const chatId=req.params.id
      const groupId=req.params.groupid
-     console.log(chatId,groupId)
+    //  console.log(chatId,groupId)
       try {
         if(chatId!=undefined){
            const messages=await chat.findAll({where:{
             id:{[Op.gt]: chatId},
             groupId:req.params.groupid
           }});
-          console.log(messages)
+          // console.log(messages)
           res.status(200).json(messages)
         }else{
           const messages=await chat.findAll(
@@ -33,7 +33,7 @@ exports.getMessages=async(req,res,next)=>{
               groupId:groupId
             }}
           );
-          console.log(messages)
+          // console.log(messages)
           res.status(201).json(messages)
         }
         // const messages=await chat.findAll();

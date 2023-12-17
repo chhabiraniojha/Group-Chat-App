@@ -11,6 +11,7 @@ router.post("/signup",userController.signup);
 router.post('/signin',userController.signin);
 router.get('/onLineusers',userController.onlineUser);
 router.get('/allusers',authenticateUser,userController.allUsers);
+router.get('/currentuser',authenticateUser,userController.currentUser);
 
 
 

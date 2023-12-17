@@ -7,6 +7,11 @@ const { Op } =require('sequelize');
 const generateAccessToken=(id)=>{
   return jwt.sign({userId:id},process.env.SECRET_KEY)
 }
+
+exports.currentUser=(req,res,next)=>{
+    res.json(req.user)
+}
+
 exports.signup = async (req, res, next) => {
   const { name, email,phone, password } = req.body;
   try {
