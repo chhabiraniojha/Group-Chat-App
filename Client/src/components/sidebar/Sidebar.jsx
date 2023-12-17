@@ -17,8 +17,9 @@ function Sidebar() {
 
     const getCoversation=async ()=>{
         try {
-            const response=await axios.get('http://localhost:3000/users/onlineusers')
-            console.log(response);
+            const token=localStorage.getItem("token")
+            const response=await axios.get('http://localhost:3000/groups/allgroups',{ headers: { Authorization: token } })
+            
             setConversation(response.data)
         } catch (error) {
             console.log(error)
@@ -27,7 +28,7 @@ function Sidebar() {
     useEffect(()=>{
         getCoversation();  
     },[])
-    console.log(conversations)
+    // console.log(conversations)
     
     return (
         <div className='sidebar-container'>

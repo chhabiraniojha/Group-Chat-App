@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt')
 const User=require('../models/User')
 const jwt=require('jsonwebtoken')
+const { Op } =require('sequelize');
 
 
 const generateAccessToken=(id)=>{
@@ -74,4 +75,23 @@ exports.onlineUser=async(req,res,next)=>{
    } catch (error) {
     
    }
+}
+
+
+exports.allUsers=async(req,res,next)=>{
+  
+  try {
+   const userList = await User.findAll({
+    where: {
+      [Op.not]: {
+        id: req.user.id
+      },
+    },
+   })
+   
+     res.status(200).json(userList)
+   
+  } catch (error) {
+     res.json(error)
+  }
 }

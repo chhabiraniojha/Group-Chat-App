@@ -22,7 +22,8 @@ function App() {
           <Route path='signup' element={<Signup />} />
         </Route>
         <Route path='app' element={<MainContainer />} >
-          <Route path='chat' element={<ChatArea />} />
+          <Route path='chat/:group' element={<ChatArea />} />
+          {/* <Route path='chat/' element={<ChatArea />} /> */}
           <Route path='welcome' element={<WelcomePage />} />
           <Route path='users' element={<Users />} />
           <Route path='groups' element={<Groups />} />
