@@ -8,10 +8,11 @@ import Sidebar from '../sidebar/Sidebar'
 // import Users from '../userGroups/Users'
 import { Outlet } from 'react-router-dom'
 
-function MainContainer() {
+function MainContainer({set}) {
+  console.log(set)
   return (
     <div className='main-container'>
-      <Sidebar />
+      <Sidebar set={set} />
       <Outlet />
       {/* <User_Groups /> */}
       {/* <CreateGroup /> */}

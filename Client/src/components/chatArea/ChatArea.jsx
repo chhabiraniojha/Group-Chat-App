@@ -22,9 +22,9 @@ function ChatArea() {
     const chatAreaRef = useRef(null);
     const groupData = useParams();
     let currentGroup = JSON.parse(groupData.group);
-    console.log(currentGroup)
+    // console.log(currentGroup)
 
-    console.log(currentGroup)
+    // console.log(currentGroup)
     const [message, setMessage] = useState("");
     const [messageArea, setMessageArea] = useState([]);
     const [currentUser, setCurrentUser] = useState({ id: localStorage.getItem("token") });
@@ -46,7 +46,7 @@ function ChatArea() {
 
             const formData = new FormData();
             formData.append('file', file);
-            console.log('FormData:', formData);
+            // console.log('FormData:', formData);
             const reader = new FileReader();
             reader.onloadend = () => {
                 setFilePreview(reader.result);
@@ -62,13 +62,13 @@ function ChatArea() {
         try {
             if (selectedFile) {
                 // Create FormData
-                console.log(selectedFile.name)
+                // console.log(selectedFile.name)
                 const fileExtension = selectedFile.name.split('.').pop().toLowerCase();
-                console.log('File Extension:', fileExtension);
+                // console.log('File Extension:', fileExtension);
                 let formData = new FormData();
                 formData.append('file', selectedFile);
                 const data = formData.get("file")
-                console.log(data)
+                // console.log(data)
 
                 const token = localStorage.getItem("token")
                 const response = await axios.post(`http://localhost:3000/mediachat?groupData=${JSON.stringify(currentGroup)}&fileExtension=${fileExtension}`, { data },
@@ -79,9 +79,9 @@ function ChatArea() {
                             Authorization: token,
                         }
                     });
-                console.log(response)
+                // console.log(response)
                 if (response.status == 200) {
-                    console.log(response.data.chats)
+                    // console.log(response.data.chats)
                     setIsModalOpen(false);
                     socket.emit("new message", response, currentGroup.id)
                 }
@@ -108,21 +108,21 @@ function ChatArea() {
         }
         try {
             const token = localStorage.getItem("token")
-            console.log(`mytoken ${token}`)
-            console.log(message)
+            // console.log(`mytoken ${token}`)
+            // console.log(message)
             const response = await axios.post(`http://localhost:3000/chat`, { message, groupId: currentGroup.id }, {
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: token,
                 }
             })
-            console.log(response)
+            // console.log(response)
             if (response.status == 200) {
                 setMessage("")
             }
             socket.emit("new message", response, currentGroup.id)
         } catch (error) {
-            console.log(error)
+            // console.log(error)
         }
     }
 
@@ -131,15 +131,15 @@ function ChatArea() {
     var decoded = jwtDecode(token);
     async function getMessages() {
         let localMessages = (JSON.parse(localStorage.getItem(`message_${currentGroup.id}`)))
-        console.log(`message_${currentGroup.id}`)
+        // console.log(`message_${currentGroup.id}`)
         let lastId = undefined;
         if (localMessages == null) {
             localMessages = [];
         } else if (localMessages.length != 0) {
             lastId = localMessages[localMessages.length - 1].id;
         }
-        console.log(currentGroup.id)
-        console.log(lastId)
+        // console.log(currentGroup.id)
+        // console.log(lastId)
 
 
         const response = await axios.get(`http://localhost:3000/chat/${lastId}/${currentGroup.id}`);
@@ -176,7 +176,7 @@ function ChatArea() {
 
 
     useEffect(() => {
-        console.log(currentUser)
+        // console.log(currentUser)
         socket = io(ENDPOINT);
         socket.emit("setup", currentUser);
         socket.on("connection", () => setSocketConnected(true));

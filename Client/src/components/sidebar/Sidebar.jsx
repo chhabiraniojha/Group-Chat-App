@@ -10,8 +10,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import ConversationItem from '../conversationItem/ConversationItem';
 import { useNavigate } from 'react-router-dom';
 import axios from "axios"
+import LogoutIcon from '@mui/icons-material/Logout';
 
-function Sidebar() {
+function Sidebar({set}) {
+    console.log(set)
     const navigate=useNavigate();
     const [conversations,setConversation]=useState([]);
 
@@ -39,18 +41,21 @@ function Sidebar() {
                     </IconButton>
                 </div>
                 <div>
-                    <IconButton onClick={()=>navigate('users')}>
+                    {/* <IconButton onClick={()=>navigate('users')}>
                         <PersonAddIcon />
                     </IconButton>
                     <IconButton onClick={()=>navigate('groups')}>
                         <GroupAddIcon />
-                    </IconButton>
+                    </IconButton> */}
                     <IconButton onClick={()=>navigate('creategroups')}>
                         <AddCircleIcon />
                     </IconButton>
-                    <IconButton>
-                        <NightlightIcon />
+                    <IconButton onClick={()=>set(false)}>
+                        <LogoutIcon />
                     </IconButton>
+                    {/* <IconButton>
+                        <NightlightIcon />
+                    </IconButton> */}
                 </div>
 
             </div>

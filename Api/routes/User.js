@@ -6,7 +6,7 @@ const authenticateUser=require('../middleWire/Auth')
 
 const router=express.Router();
 
-
+// router.get("/tokenVerification",authenticateUser,userController.tokenVerification)
 router.post("/signup",userController.signup);
 router.post('/signin',userController.signin);
 router.get('/onLineusers',userController.onlineUser);

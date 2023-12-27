@@ -9,8 +9,13 @@ const Authenticate=async (req,res,next)=>{
       //   console.log(userId)
         const user=await User.findByPk(userId);
       //   console.log(user)
+      if(user){
         req.user=user;
         next()
+      }else{
+        res.status(203).json({message:"token invalid"})
+      }
+       
         
      } catch (error) {
         res.status(501).json({

@@ -4,7 +4,8 @@ import { Button, TextField } from '@mui/material';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-function Login() {
+function Login({set}) {
+  console.log(set)
   const navigate=useNavigate();
   const [email,setEmail]=useState("");
   const [password,setPassword]=useState("")
@@ -15,6 +16,7 @@ function Login() {
       if(response.status==200){
         localStorage.setItem("token",response.data.token)
         alert("success")
+        set(true)
         navigate("/app/chat")
       }
     } catch (error) {

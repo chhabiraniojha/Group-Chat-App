@@ -2,12 +2,14 @@ import React, { useState } from 'react'
 import '../MyStyle.css'
 import { Button, TextField } from '@mui/material';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Signup() {
     const [name,setName]=useState("");
     const [email,setEmail]=useState("");
     const [phoneNo,setPhoneNo]=useState("");
     const [password,setPassword]=useState("");
+    const navigate=useNavigate();
 
     const handleSignup=async(e)=>{
         const userDetailsForSignup={
@@ -24,6 +26,7 @@ function Signup() {
                 setEmail("")
                 setPhoneNo("")
                 setPassword("")
+                navigate("/")
             }else if(response.status==203){
                 alert("user already exists")
             }
