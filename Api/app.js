@@ -1,5 +1,5 @@
 const express = require('express');
-
+const formidable = require('express-formidable');
 require('dotenv').config()
 const bodyParser = require('body-parser');
 const userRoute = require('./routes/User');
@@ -16,10 +16,8 @@ const { HasMany } = require('sequelize');
 
 
 const app = express();
-app.use(bodyParser.json({ extended: false }));
-app.use(cors())
-
-
+app.use(cors());  // Enable CORS
+app.use(formidable({})); 
 
 
 app.use("/users", userRoute);
