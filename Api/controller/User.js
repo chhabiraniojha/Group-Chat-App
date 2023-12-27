@@ -13,7 +13,8 @@ exports.currentUser=(req,res,next)=>{
 }
 
 exports.signup = async (req, res, next) => {
-  const { name, email,phone, password } = req.body;
+  const { name, email,phone, password } = req.fields;
+  // console.log(req.fields)
   try {
     const userCheck = await User.findOne({ where: { email } });
     if (userCheck === null) {
@@ -32,7 +33,7 @@ exports.signup = async (req, res, next) => {
 }
 
 exports.signin = async (req, res, next) => {
-  const { email, password } = req.body;
+  const { email, password } = req.fields;
   try {
     const user = await User.findAll({
       where: {

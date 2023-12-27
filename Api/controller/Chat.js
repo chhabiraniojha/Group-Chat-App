@@ -59,13 +59,13 @@ exports.mediaMessages = async (req, res, next) => {
     const formData = req.files.data;
     const groupData = JSON.parse(req.query.groupData);
     // console.log(formData)
-    // console.log(groupData)
+    console.log(req.query.fileExtension)
     const fileContentBuffer = await readFileAsync(formData.path);
     const fileName = `${groupData.groupName}-${groupData.User_Groups.userId}-${formData.name}`;
     const fileUrl = await uploadToS3(fileContentBuffer, fileName);
-    // console.log(fileUrl)
+    console.log(fileUrl)
 
-    const chats = await chat.create({ message: fileUrl.Location, groupId: groupData.id, userId: groupData.User_Groups.userId })
+    const chats = await chat.create({ message: fileUrl.Location,messageType:req.query.fileExtension, groupId: groupData.id, userId: groupData.User_Groups.userId })
     // console.log(chats)
     res.status(200).json({ fileUrl, success: true,data:chats })
   } catch (error) {

@@ -3,7 +3,7 @@ const Groups = require('../models/Group')
 const sequelize=require('../Utill/database')
 
 exports.createGroup = async (req, res, next) => {
-    const { group, groupName } = req.body
+    const { group, groupName } = req.fields
     const groupAdmin=req.user.id;
     const t = await sequelize.transaction();
     

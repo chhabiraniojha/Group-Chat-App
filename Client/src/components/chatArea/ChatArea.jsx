@@ -62,14 +62,16 @@ function ChatArea() {
         try {
             if (selectedFile) {
                 // Create FormData
-                console.log(selectedFile)
+                console.log(selectedFile.name)
+                const fileExtension = selectedFile.name.split('.').pop().toLowerCase();
+                console.log('File Extension:', fileExtension);
                 let formData = new FormData();
                 formData.append('file', selectedFile);
-                const data=formData.get("file")
+                const data = formData.get("file")
                 console.log(data)
 
-                const token=localStorage.getItem("token")
-                const response = await axios.post(`http://localhost:3000/mediachat?groupData=${JSON.stringify(currentGroup)}`, {data},
+                const token = localStorage.getItem("token")
+                const response = await axios.post(`http://localhost:3000/mediachat?groupData=${JSON.stringify(currentGroup)}&fileExtension=${fileExtension}`, { data },
 
                     {
                         headers: {
@@ -77,17 +79,17 @@ function ChatArea() {
                             Authorization: token,
                         }
                     });
-                    console.log(response)
-                  if(response.status==200)  {
+                console.log(response)
+                if (response.status == 200) {
                     console.log(response.data.chats)
                     setIsModalOpen(false);
                     socket.emit("new message", response, currentGroup.id)
-                  }
-                
+                }
+
             }
-              else {
+            else {
                 alert('Please select a file.');
-              }
+            }
         } catch (error) {
             console.error('Error uploading file:', error.message);
         }
@@ -108,10 +110,12 @@ function ChatArea() {
             const token = localStorage.getItem("token")
             console.log(`mytoken ${token}`)
             console.log(message)
-            const response = await axios.post(`http://localhost:3000/chat`, { message, groupId: currentGroup.id }, { headers: {
-                'Content-Type': 'application/json',
-                Authorization: token,
-            }})
+            const response = await axios.post(`http://localhost:3000/chat`, { message, groupId: currentGroup.id }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: token,
+                }
+            })
             console.log(response)
             if (response.status == 200) {
                 setMessage("")
@@ -253,6 +257,7 @@ function ChatArea() {
                             type="file"
                             id="fileInput"
                             ref={fileInputRef}
+                            style={{ display: 'none' }}
                             // style={{ position: 'absolute', left: '-9999px' }}
                             onChange={handleFileChange}
                         />

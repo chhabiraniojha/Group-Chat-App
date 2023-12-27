@@ -14,10 +14,11 @@ const Chat=sequelize.define('chat',{
     type:Sequelize.STRING,
     allowNull:false
   },
-  // messageType:{
-  //   type:Sequelize.STRING,
-  //   allowNull:false
-  // }
+  messageType:{
+    type:Sequelize.STRING,
+    allowNull:false,
+    defaultValue:"text"
+  }
 });
 
 module.exports=Chat;
