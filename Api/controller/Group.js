@@ -1,5 +1,5 @@
-const Users = require('../models/User')
-const Groups = require('../models/Group')
+const Users = require('../models/user')
+const Groups = require('../models/group')
 const sequelize=require('../Utill/database')
 
 exports.createGroup = async (req, res, next) => {
@@ -27,17 +27,22 @@ exports.createGroup = async (req, res, next) => {
 
 
 exports.getGroups=async(req,res,next)=>{
-    
+    // res.json("hii")
+
     try {
-        const user=req.user;
+        const userId=req.user.id;
+        const user = await Users.findByPk(userId);
         if(user){
+            
+            // console.log(userId instanceof Users);
             const allGroups=await user.getGroups();
+            console.log(allGroups)
             
             res.status(200).json(allGroups)
         }
         
         
     } catch (error) {
-        res.status(500).json("internal server error")
+        res.status(500).json({error})
     }
 }

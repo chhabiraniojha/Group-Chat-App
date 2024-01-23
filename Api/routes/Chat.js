@@ -1,6 +1,6 @@
 const express=require('express');
-const chatController=require('../controller/Chat')
-const authenticateUser=require('../middleWire/Auth')
+const chatController=require('../controller/chat')
+const authenticateUser=require('../middleWire/auth')
 const router=express.Router();
 
 router.post("/chat",authenticateUser,chatController.messages);

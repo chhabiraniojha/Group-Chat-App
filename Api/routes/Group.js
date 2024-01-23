@@ -1,6 +1,6 @@
 const express=require("express");
-const groupController=require("../controller/Group");
-const authenticateUser=require('../middleWire/Auth')
+const groupController=require("../controller/group");
+const authenticateUser=require('../middleWire/auth')
 
 
 

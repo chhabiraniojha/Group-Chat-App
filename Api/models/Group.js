@@ -13,10 +13,6 @@ const Group=sequelize.define('group',{
   groupName:{
     type:Sequelize.STRING,
     allowNull:false
-  },
-  groupAdmin:{
-    type:Sequelize.STRING,
-    allowNull:false
   }
   
 });

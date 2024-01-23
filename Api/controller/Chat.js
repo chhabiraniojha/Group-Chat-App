@@ -1,7 +1,7 @@
 const util = require('util');
 const fs = require('fs');
-const chat = require('../models/Chat');
-const user = require('../models/User');
+const chat = require('../models/chat');
+const user = require('../models/user');
 const { Op } = require('sequelize');
 const AWS = require('aws-sdk');
 

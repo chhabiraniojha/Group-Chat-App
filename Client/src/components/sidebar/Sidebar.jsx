@@ -21,6 +21,7 @@ function Sidebar({set}) {
         try {
             const token=localStorage.getItem("token")
             const response=await axios.get('http://localhost:3000/groups/allgroups',{ headers: { Authorization: token } })
+            console.log(response)
             
             setConversation(response.data)
         } catch (error) {

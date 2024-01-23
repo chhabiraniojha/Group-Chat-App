@@ -1,15 +1,18 @@
 const express = require('express');
 const formidable = require('express-formidable');
+
 require('dotenv').config()
 const bodyParser = require('body-parser');
-const userRoute = require('./routes/User');
-const chatRoute = require('./routes/Chat');
-const groupRoute = require('./routes/Group')
+const userRoute = require('./routes/user');
+const chatRoute = require('./routes/chat');
+const groupRoute = require('./routes/group')
 
 const sequelize = require('./Utill/database')
-const Users = require('./models/User')
-const Chats = require('./models/Chat')
-const Groups = require('./models/Group')
+const Users = require('./models/user')
+const Chats = require('./models/chat')
+const Groups = require('./models/group')
+const archivedChat=require("./models/archived-chat")
+const cronService = require('./services/cron-service');
 const cors = require('cors');
 const { HasMany } = require('sequelize');
 
@@ -30,13 +33,22 @@ Chats.belongsTo(Users)
 
 Users.belongsToMany(Groups, { through: 'User_Groups' });
 Groups.belongsToMany(Users, { through: 'User_Groups' });
+Groups.belongsTo(Users, { foreignKey: 'groupAdmin' });
 
-Groups.hasMany(Chats)
-Chats.belongsTo(Groups)
+Groups.hasMany(Chats);
+Chats.belongsTo(Groups);
+
+
+// Users.hasMany(Groups);
+// Groups.belongsTo(Users);
+
 
 sequelize.sync({})
     .then(res => {
-        const server = app.listen(3000);
+        const server = app.listen(3000,()=>{
+            cronService.scheduleChatArchiving();
+        });
+        
 
         const io = require('socket.io')(server, {
             cors: {
@@ -46,7 +58,7 @@ sequelize.sync({})
         })
 
         io.on("connection", (socket) => {
-            console.log("connected to socket.io")
+            // console.log("connected to socket.io")
             socket.on('setup', (userData) => {
                 // console.log(userData.id)
                 socket.join(userData.id)
